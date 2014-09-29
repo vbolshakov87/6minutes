@@ -97,8 +97,13 @@ class AdminController extends BaseController
 			return Redirect::to($postModerateUrl)->with('error', 'User '.$post->email.' is not under moderation');
 		}*/
 
+		$newConfirm = $action == 'approve'? Post::POST_STATUS_APPROVED : Post::POST_STATUS_REJECTED;
+		if ($post->confirmed == $newConfirm) {
+			return Redirect::to($postModerateUrl)->with('message', 'User '.$post->email.' is already '.$action.'ed. Email is not sent');
+		}
+
 		// save new confirmed status
-		$post->confirmed = $action == 'approve'? Post::POST_STATUS_APPROVED : Post::POST_STATUS_REJECTED;
+		$post->confirmed = $newConfirm;
 		if (!$post->save()) {
 			return Redirect::to($postModerateUrl)->with('error', 'User '.$post->email.' is not updated');
 		}

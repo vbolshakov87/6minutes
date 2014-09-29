@@ -85,7 +85,11 @@ class HomeController extends BaseController {
 			}
 
 			// success redirect
-			return Redirect::to('/')->with('message', 'New post is created');
+			$message = 'New post is created';
+			if ($isFirstPost) {
+				$message .= ', your post is under moderation now';
+			}
+			return Redirect::to('/')->with('message', $message);
 		}
 
 		// error redirect
