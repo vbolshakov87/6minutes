@@ -38,6 +38,9 @@ class HomeController extends BaseController {
 	 */
 	public function postCreate()
 	{
+		// set that post is first for the user
+		$isFirstPost = false;
+
 		// pre validation
 		$params = Input::all();
 		foreach ($params as $key => $value) {
@@ -61,15 +64,14 @@ class HomeController extends BaseController {
 		);
 
 		// check if user already created post before
+		/** @var Post $existFirstPost */
 		$existFirstPost = Post::getFirstPost($params['email']);
-
 		if (!empty($existFirstPost)) {
-			// if user's first
-			if ($existFirstPost->confirmed == Post::POST_STATUS_PENDING) {
+			// if user's first post
+			if ($existFirstPost->isPostInPending()) {
 				return Redirect::back()->withInput($params)->withErrors(array('Your first post is not approved, you cannot add new posts now'));
 			}
 			$postData['confirmed'] = $existFirstPost->confirmed;
-			$isFirstPost = false;
 		} else {
 			$isFirstPost = true;
 		}
@@ -81,7 +83,7 @@ class HomeController extends BaseController {
 			$postData['id'] = $post->id;
 			// if this post is first for user - send email to moderator
 			if ($isFirstPost) {
-				SendMail::sendMailToModerator($postData);
+				ProjectMailer::prepareMailToModerator($postData);
 			}
 
 			// success redirect

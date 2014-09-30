@@ -14,5 +14,6 @@ return array(
 	*/
 
 	'debug' => true,
+	'url' => 'http://6minutes-hr.loc'
 
 );

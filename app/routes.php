@@ -14,6 +14,7 @@
 Route::pattern('id', '[0-9]+');
 
 
+
 Route::get('/','HomeController@index');
 
 Route::get('login', 'UserController@showLogin');

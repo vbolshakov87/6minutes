@@ -15,7 +15,7 @@ class AdminController extends BaseController
 		$this->beforeFilter('auth');
 
 		// only admin can access
-		if (!Auth::user()->hasRole(Role::ROLE_ADMIN)) {
+		if (Auth::check() && !Auth::user()->hasRole(Role::ROLE_ADMIN)) {
 			return Redirect::to('/')->with('message', 'Permission denied');
 		}
 	}
@@ -108,7 +108,7 @@ class AdminController extends BaseController
 			return Redirect::to($postModerateUrl)->with('error', 'User '.$post->email.' is not updated');
 		}
 
-		SendMail::sendMailToManager($post, $action);
+		ProjectMailer::prepareMailToManager($post->toArray(), $action);
 
 		return Redirect::to($postModerateUrl)->with('message', 'User '.$post->email.' is '.$action.'ed');
 	}

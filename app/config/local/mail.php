@@ -7,7 +7,7 @@ return array(
 	'from' => array('address' => 'vbolshakov87@gmail.com', 'name' => 'Vladimir'),
 	'encryption' => 'tls',
 	'username' => 'vbolshakov87',
-	'password' => '####',
+	'password' => '###',
 	'sendmail' => '/usr/sbin/sendmail -bs',
 	'pretend' => false,
 );

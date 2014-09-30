@@ -24,7 +24,6 @@ class Post extends Eloquent {
 	 */
 	public function content()
 	{
-		Mail::send();
 		return nl2br($this->description);
 	}
 
@@ -104,6 +103,11 @@ class Post extends Eloquent {
 			->orderBy('created_at', 'asc')->get();
 
 		return (!empty($existFirstPost[0])) ? $existFirstPost[0] : null;
+	}
 
+
+	public function isPostInPending()
+	{
+		return $this->confirmed == static::POST_STATUS_PENDING;
 	}
 }
